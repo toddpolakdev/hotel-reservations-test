@@ -8,11 +8,13 @@
           ><img src="assets/images/arrow.png" alt="down arrow"
         /></a>
       </p>
-      <h2>{{ welcomeMessage }}</h2>
-      <div class="welcome-btns" style="display: flex; justify-content: center">
-        <button (click)="loadWelcome('en-US')">English</button>
-        <button (click)="loadWelcome('fr-CA')">Français</button>
-      </div>
+
+      <h2 *ngIf="data" style="width: 100%; max-width: 600px">
+        {{ data.en.message }}
+        <small>({{ data.en.locale }} • {{ data.en.thread }})</small><br />
+        {{ data.fr.message }}
+        <small>({{ data.fr.locale }} • {{ data.fr.thread }})</small>
+      </h2>
     </div>
   </article>
   <link
@@ -142,9 +144,16 @@
                     />
                   </td>
                   <td>
-                    <strong>Room #: {{ room.roomNumber }}</strong
-                    ><br />
-                    <strong>Price: ${{ room.price }}</strong>
+                    <strong>Room #: {{ room.roomNumber }}</strong>
+
+                    <br />
+                    <strong>Price (US): {{ room.priceUSD }}</strong>
+
+                    <br />
+                    <strong>Price (CA): {{ room.priceCAD }}</strong>
+
+                    <br />
+                    <strong>Price (Euro): {{ room.priceEUR }}</strong>
                   </td>
                   <td>
                     <button

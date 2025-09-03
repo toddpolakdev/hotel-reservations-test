@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import edu.wgu.d387_sample_code.utils.FormatCurrency;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -79,7 +79,16 @@ public class ReservationResource {
             else if(rcheckin.isEqual(checkin)) allRooms.remove(reservationEntity.getRoomEntity());
         }
         Page<RoomEntity> page=new PageImpl<>(allRooms);
-        return page.map(converter::convert);
+        return page
+                .map(converter::convert)
+                .map(r -> {
+                    double amount = r.getPrice();
+
+                    r.setPriceUSD(FormatCurrency.usd(amount));
+                    r.setPriceCAD(FormatCurrency.cad(amount));
+                    r.setPriceEUR(FormatCurrency.eur(amount));
+                    return r;
+                });
     }
 
     @RequestMapping(path = "/{roomId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

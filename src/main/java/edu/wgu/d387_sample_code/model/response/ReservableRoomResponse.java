@@ -10,6 +10,10 @@ public class ReservableRoomResponse {
 	private Integer roomNumber;
 	private Integer price;
 	private Links links;
+
+	private String priceUSD;
+	private String priceCAD;
+	private String priceEUR;
 	
 	public ReservableRoomResponse() {
 		super();
@@ -45,6 +49,15 @@ public class ReservableRoomResponse {
 	public void setLinks(Links links) {
 		this.links = links;
 	}
+
+	public String getPriceUSD() { return priceUSD; }
+	public void setPriceUSD(String priceUSD) { this.priceUSD = priceUSD; }
+
+	public String getPriceCAD() { return priceCAD; }
+	public void setPriceCAD(String priceCAD) { this.priceCAD = priceCAD; }
+
+	public String getPriceEUR() { return priceEUR; }
+	public void setPriceEUR(String priceEUR) { this.priceEUR = priceEUR; }
 	
 	
 }

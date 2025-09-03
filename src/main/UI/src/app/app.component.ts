@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+// import { map } from 'rxjs/operators';
 import { WelcomeService } from './services/welcome.service';
 
 @Component({
@@ -11,11 +11,16 @@ import { WelcomeService } from './services/welcome.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  welcomeMessage = '';
+  // welcomeMessage = '';
+
+  data?: {
+    en: { message: string; locale: string; thread: string };
+    fr: { message: string; locale: string; thread: string };
+  };
 
   constructor(
     private httpClient: HttpClient,
-    private welcomeService: WelcomeService
+    private welcome: WelcomeService
   ) {}
 
   private baseURL: string = 'http://localhost:8080';
@@ -35,7 +40,7 @@ export class AppComponent implements OnInit {
       checkout: new FormControl(' '),
     });
 
-    this.loadWelcome('en-US');
+    this.welcome.getThreaded().subscribe((res) => (this.data = res));
 
     //     this.rooms=ROOMS;
 
@@ -45,12 +50,6 @@ export class AppComponent implements OnInit {
     roomsearchValueChanges$.subscribe((x) => {
       this.currentCheckInVal = x.checkin;
       this.currentCheckOutVal = x.checkout;
-    });
-  }
-
-  loadWelcome(lang: string) {
-    this.welcomeService.getWelcome(lang).subscribe((msg) => {
-      this.welcomeMessage = msg;
     });
   }
 
@@ -108,6 +107,9 @@ export interface Room {
   id: string;
   roomNumber: string;
   price: string;
+  priceUSD: string;
+  priceCAD: string;
+  priceEUR: any;
   links: string;
 }
 export class ReserveRoomRequest {

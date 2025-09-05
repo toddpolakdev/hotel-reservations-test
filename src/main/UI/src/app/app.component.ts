@@ -4,6 +4,10 @@ import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // import { map } from 'rxjs/operators';
 import { WelcomeService } from './services/welcome.service';
+import {
+  PresentationService,
+  PresentationTimeResponse,
+} from './services/presentation.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +15,7 @@ import { WelcomeService } from './services/welcome.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  // welcomeMessage = '';
+  message = '';
 
   data?: {
     en: { message: string; locale: string; thread: string };
@@ -20,7 +24,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    private welcome: WelcomeService
+    private welcome: WelcomeService,
+    private svc: PresentationService
   ) {}
 
   private baseURL: string = 'http://localhost:8080';
@@ -41,6 +46,13 @@ export class AppComponent implements OnInit {
     });
 
     this.welcome.getThreaded().subscribe((res) => (this.data = res));
+
+    const etStart = '2025-09-18T14:30:00';
+    this.svc
+      .getEtMtUtc(etStart, this.baseURL)
+      .subscribe((res: PresentationTimeResponse) => {
+        this.message = res.message;
+      });
 
     //     this.rooms=ROOMS;
 
